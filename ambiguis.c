@@ -1,34 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ambiguis.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/06/07 15:43:36 by zouaraqa          #+#    #+#             */
+/*   Updated: 2023/06/09 15:15:23 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+int	ambiguis(char *found)
 {
-	size_t	i;
-	char	*str;
+	int	i;
+	int	count;
+	int	space;
 
 	i = 0;
-	if (!s)
+	count = 0;
+	space = 0;
+	if (!found)
 		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	while (found[i])
 	{
-		str[i] = s[start];
+		if (found[i] == ' ' || found[i] == '\t')
+				space++;
+		else if (found[i])
+			count++;
 		i++;
-		start++;
 	}
-	str[i] = '\0';
-	return (str);
+	if (count > 1 && space)
+		return (1);
+	return (0);
 }

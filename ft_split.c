@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zouaraqa <zouaraqa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/26 15:56:21 by zouaraqa          #+#    #+#             */
-/*   Updated: 2023/05/18 11:05:46 by zouaraqa         ###   ########.fr       */
+/*   Created: 2023/05/29 12:01:33 by zouaraqa          #+#    #+#             */
+/*   Updated: 2023/06/09 15:20:11 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "header.h"
+#include "minishell.h"
 
 static void	*ft_memmove(void *dst, const void *src, size_t len)
 {
@@ -28,7 +28,7 @@ static void	*ft_memmove(void *dst, const void *src, size_t len)
 	return (dst);
 }
 
-void	*ft_calloc(size_t count, size_t size)
+static void	*ft_calloc(size_t count, size_t size)
 {
 	size_t	i;
 	void	*cal;
@@ -87,7 +87,7 @@ static char	**word_len(char *s, char c, char **str)
 	return (str);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char *s, char c)
 {
 	int		nbw;
 	char	**str;

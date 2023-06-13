@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   wait.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/25 16:52:15 by zouaraqa          #+#    #+#             */
+/*   Updated: 2023/06/09 15:22:18 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+void	wait_pid(void)
 {
-	size_t	i;
-	char	*str;
+	unsigned char	*stat;
+	int				status;
+	int				np;
+	int				i;
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	i = -1;
+	np = ft_pipesize(g_va.sp);
+	while (++i < np)
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		if (waitpid(g_va.pids[i], &status, 0) == -1)
+			ft_putstr_fd("wait Error\n", 1);
+		stat = (unsigned char *)&status;
+		if (stat[0])
+			g_va.exit_s = stat[0] + 128;
+		else
+			g_va.exit_s = stat[1];
 	}
-	str[i] = '\0';
-	return (str);
 }

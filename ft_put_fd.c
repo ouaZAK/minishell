@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_put_fd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/29 17:57:17 by zouaraqa          #+#    #+#             */
+/*   Updated: 2023/06/09 15:20:05 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+void	ft_putchar_fd(char c, int fd)
 {
-	size_t	i;
-	char	*str;
+	write(fd, &c, 1);
+}
 
-	i = 0;
+void	ft_putstr_fd(char *s, int fd)
+{
 	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+		return ;
+	while (*s)
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		ft_putchar_fd(*s, fd);
+		s++;
 	}
-	str[i] = '\0';
-	return (str);
 }

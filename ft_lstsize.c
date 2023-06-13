@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/23 19:32:51 by zouaraqa          #+#    #+#             */
+/*   Updated: 2023/06/09 15:20:02 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+int	ft_pipesize(t_pipe *sp)
 {
-	size_t	i;
-	char	*str;
+	int	i;
 
 	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	while (sp)
 	{
-		str[i] = s[start];
 		i++;
-		start++;
+		sp = sp->nxt;
 	}
-	str[i] = '\0';
-	return (str);
+	return (i);
+}
+
+int	ft_linesize(t_line *lin)
+{
+	int	i;
+
+	i = 0;
+	while (lin)
+	{
+		i++;
+		lin = lin->nxt;
+	}
+	return (i);
 }

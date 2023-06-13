@@ -1,34 +1,48 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_is.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/21 11:18:11 by zouaraqa          #+#    #+#             */
+/*   Updated: 2023/06/09 15:19:29 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+int	ft_isspace(char c)
 {
-	size_t	i;
-	char	*str;
+	if (c == ' ' || c == '\t')
+		return (1);
+	return (0);
+}
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
-	{
-		str[i] = s[start];
-		i++;
-		start++;
-	}
-	str[i] = '\0';
-	return (str);
+int	ft_isred(char c)
+{
+	if (c == '<' || c == '>')
+		return (1);
+	return (0);
+}
+
+int	ft_isquot(char c)
+{
+	if (c == '\'' || c == '"')
+		return (1);
+	return (0);
+}
+
+int	ft_isspec(char c)
+{
+	if (ft_isspace(c) || ft_isred(c) || c == '|')
+		return (1);
+	return (0);
+}
+
+int	ft_isdlr(char c)
+{
+	if (c == '$')
+		return (1);
+	return (0);
 }

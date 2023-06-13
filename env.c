@@ -1,34 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/25 21:31:51 by agimi             #+#    #+#             */
+/*   Updated: 2023/06/12 16:20:27 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+void	env_cmd(t_line *lm, int x)
 {
-	size_t	i;
-	char	*str;
+	t_env	*env;
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	if (!x)
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		open_here();
+		if (open_file(g_va.sp, x))
+			return ;
 	}
-	str[i] = '\0';
-	return (str);
+	env = g_va.env;
+	if (lm && lm->nxt && (!ft_strcmp(lm->nxt->typ, "arg")
+			|| !ft_strcmp(lm->nxt->typ, "ex")))
+	{
+		print_error(lm->nxt->shx, 127, x);
+		close_fd();
+		return ;
+	}
+	while (env)
+	{
+		ft_putstr_fd(env->arg, 1);
+		ft_putchar_fd('\n', 1);
+		env = env->nxt;
+	}
+	if (x)
+		exit(0);
+	close_fd();
 }

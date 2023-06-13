@@ -1,34 +1,46 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/22 18:40:38 by zouaraqa          #+#    #+#             */
+/*   Updated: 2023/06/09 15:19:45 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+void	lin_clear(t_pipe *sp)
 {
-	size_t	i;
-	char	*str;
+	t_line	*ltmp;
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	while (sp->lin)
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		ltmp = sp->lin->nxt;
+		if (sp->lin->shx)
+			free(sp->lin->shx);
+		if (sp->lin->bex)
+			free(sp->lin->bex);
+		if (sp->lin->del)
+			free(sp->lin->del);
+		free(sp->lin->path);
+		free(sp->lin);
+		sp->lin = ltmp;
 	}
-	str[i] = '\0';
-	return (str);
+}
+
+void	ft_lstclear(t_pipe **sp)
+{
+	t_pipe	*stmp;
+
+	while (*sp)
+	{
+		stmp = (*sp)->nxt;
+		lin_clear(*sp);
+		free((*sp)->pl);
+		free(*sp);
+		*sp = stmp;
+	}
 }

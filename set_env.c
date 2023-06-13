@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   set_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/23 18:47:21 by zouaraqa          #+#    #+#             */
+/*   Updated: 2023/06/12 15:49:23 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+void	set_env(char **env)
 {
-	size_t	i;
-	char	*str;
+	int	i;
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	i = -1;
+	if (!env || !*env)
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		ft_backenv(&g_va.env, new_env(ft_strdup("PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:\
+		/usr/local/munki:/Users/agimi/goinfre/.brew/bin")));
+		return ;
 	}
-	str[i] = '\0';
-	return (str);
+	while (env[++i])
+		ft_backenv(&g_va.env, new_env(env[i]));
 }
