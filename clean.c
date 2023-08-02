@@ -1,34 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   clean.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/23 16:46:26 by agimi             #+#    #+#             */
+/*   Updated: 2023/06/09 15:17:17 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+static void	copy_it(t_line *lm)
 {
-	size_t	i;
-	char	*str;
+	int	i;
+	int	j;
 
 	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	j = -1;
+	while (lm->shx[i])
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		if (lm->shx[i] == 30)
+			i++;
+		else
+			lm->shx[++j] = lm->shx[i++];
 	}
-	str[i] = '\0';
-	return (str);
+	lm->shx[++j] = '\0';
+}
+
+void	clean(void)
+{
+	t_pipe	*sm;
+	t_line	*lm;
+
+	sm = g_va.sp;
+	while (sm)
+	{
+		lm = sm->lin;
+		while (lm)
+		{
+			if (ft_strchr(lm->shx, 30))
+				copy_it(lm);
+			lm = lm->nxt;
+		}
+		sm = sm->nxt;
+	}
 }

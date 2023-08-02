@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_is_2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/23 11:30:06 by zouaraqa          #+#    #+#             */
+/*   Updated: 2023/06/09 15:19:26 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+int	ft_isalpha(int c)
 {
-	size_t	i;
-	char	*str;
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+		return (1);
+	return (0);
+}
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
-	{
-		str[i] = s[start];
-		i++;
-		start++;
-	}
-	str[i] = '\0';
-	return (str);
+int	ft_isdigit(int c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}
+
+int	ft_iss(int c)
+{
+	if (c == '-' || c == '+' || c == '/' || c == '^'
+		|| c == '%' || c == '.' || c == ',' || c == '=')
+		return (1);
+	return (0);
 }

@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/20 16:52:39 by agimi             #+#    #+#             */
+/*   Updated: 2023/06/09 15:20:17 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+char	*ft_strdup(char *s1)
 {
-	size_t	i;
-	char	*str;
+	int		i;
+	char	*du;
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
-	{
-		str[i] = s[start];
-		i++;
-		start++;
-	}
-	str[i] = '\0';
-	return (str);
+	i = -1;
+	if (!s1)
+		return (NULL);
+	du = malloc(sizeof(char) * ft_strlen(s1) + 1);
+	if (!du)
+		return (NULL);
+	while (s1[++i])
+		du[i] = s1[i];
+	du[i] = '\0';
+	return (du);
 }

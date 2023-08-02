@@ -1,34 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_cmp.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/20 22:41:24 by agimi             #+#    #+#             */
+/*   Updated: 2023/06/09 15:19:19 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	size_t	i;
-	char	*str;
+	size_t	a;
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
-	{
-		str[i] = s[start];
-		i++;
-		start++;
-	}
-	str[i] = '\0';
-	return (str);
+	a = -1;
+	if (!s1 || !s2)
+		return (1);
+	while (s1[++a] || s2[a])
+		if (s1[a] != s2[a])
+			return (s1[a] - s2[a]);
+	return (0);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t len)
+{
+	size_t	a;
+
+	a = -1;
+	if (!s1 || !s2)
+		return (1);
+	while ((s1[++a] || s2[a]) && len--)
+		if (s1[a] != s2[a])
+			return (s1[a] - s2[a]);
+	return (0);
 }

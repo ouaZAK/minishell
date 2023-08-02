@@ -1,34 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/20 11:54:41 by agimi             #+#    #+#             */
+/*   Updated: 2023/06/09 15:21:30 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+void	pwd_cmd(int x)
 {
-	size_t	i;
-	char	*str;
+	char	*pwd;
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	if (!x)
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		open_here();
+		if (open_file(g_va.sp, x))
+			return ;
 	}
-	str[i] = '\0';
-	return (str);
+	pwd = getcwd(NULL, 0);
+	if (!pwd)
+		print_error(pwd, 1, x);
+	ft_putstr_fd(pwd, 1);
+	ft_putchar_fd('\n', 1);
+	free(pwd);
+	if (x)
+		exit(0);
+	close_fd();
+	g_va.exit_s = 0;
 }

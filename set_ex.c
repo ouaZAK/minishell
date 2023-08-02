@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   set_ex.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/06/07 13:04:44 by agimi             #+#    #+#             */
+/*   Updated: 2023/06/09 15:21:59 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+void	set_ex(void)
 {
-	size_t	i;
-	char	*str;
+	t_pipe	*sm;
+	t_line	*lm;
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	sm = g_va.sp;
+	while (sm)
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		lm = sm->lin;
+		while (lm)
+		{
+			if (!lm->shx)
+				lm->typ = "ex";
+			lm = lm->nxt;
+		}
+		sm = sm->nxt;
 	}
-	str[i] = '\0';
-	return (str);
 }

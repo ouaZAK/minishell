@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/22 18:51:08 by zouaraqa          #+#    #+#             */
+/*   Updated: 2023/06/09 15:19:23 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+void	ft_free(void)
 {
-	size_t	i;
-	char	*str;
-
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	if (g_va.pids)
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		free(g_va.pids);
+		g_va.pids = NULL;
 	}
-	str[i] = '\0';
-	return (str);
+	free_fin(g_va.sp);
+	free_fout(g_va.sp);
+	ft_lstclear(&g_va.sp);
 }

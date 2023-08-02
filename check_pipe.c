@@ -1,34 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   check_pipe.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/23 15:50:08 by agimi             #+#    #+#             */
+/*   Updated: 2023/06/09 15:16:48 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+int	check_pipe(void)
 {
-	size_t	i;
-	char	*str;
+	t_pipe	*sm;
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	sm = g_va.sp;
+	while (sm)
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		if (!sm->lin)
+			return (write(2,
+					"syntax error near unexpected token `|'\n", 39), 1);
+		sm = sm->nxt;
 	}
-	str[i] = '\0';
-	return (str);
+	return (0);
 }

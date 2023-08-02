@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: agimi <agimi@student.1337.ma>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 15:28:26 by agimi             #+#    #+#             */
-/*   Updated: 2023/06/09 15:20:27 by agimi            ###   ########.fr       */
+/*   Created: 2023/05/31 17:59:40 by agimi             #+#    #+#             */
+/*   Updated: 2023/06/09 15:20:29 by agimi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_substr(char *s, int start, int len)
+char	*get_env(char *sen)
 {
-	size_t	i;
-	char	*str;
+	t_env	*env;
 
-	i = 0;
-	if (!s)
-		return (0);
-	str = (char *)malloc(sizeof(char) * len + 1);
-	if (!str)
-		return (0);
-	while (s[start] && i < (size_t)len)
+	env = g_va.env;
+	while (env)
 	{
-		str[i] = s[start];
-		i++;
-		start++;
+		if (!ft_strncmp(env->arg, sen, ft_strlen(sen)))
+		{
+			if (env->arg[ft_strlen(sen)] == '=')
+				return (&env->arg[ft_strlen(sen) + 1]);
+		}
+		env = env->nxt;
 	}
-	str[i] = '\0';
-	return (str);
+	return (NULL);
 }

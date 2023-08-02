@@ -3,112 +3,97 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_test.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zouaraqa <zouaraqa@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zouaraqa <zouaraqa@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:52:23 by zouaraqa          #+#    #+#             */
-/*   Updated: 2023/05/20 14:56:29 by zouaraqa         ###   ########.fr       */
+/*   Updated: 2023/08/02 20:14:20 by zouaraqa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-// int	ft_search(char *line)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (line[i])
-// 	{
-// 		if ((line[i] == ' ' || line[i] == '\'' || line[i] == '\"' 
-// 			|| line[i] == '>' || line[i] == '<' || line[i] == '|'))
-// 			return (1);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
-int	quote_func(t_vars *va, char *line, int *i)
+int	ft_search(char *line)
 {
-	// if (line[*i] == va->q && (line[*i + 1] == ' ' || line[*i + 1] == '\t' || line[*i + 1] == '|' 
-	// 	|| line[*i + 1] == '>' || line[*i + 1] == '<'))
-	// 	{
-	// 		va->quote = 0;
-	// 		return (va->quote);
-	// 	}
-	// while (line[*i] && line[*i] != va->q)
-	// 	(*i)++;
-	// if (line[*i] == va->q && (line[*i + 1] == ' ' || line[*i + 1] == '\t' || line[*i + 1] == '|' 
-	// || line[*i + 1] == '>' || line[*i + 1] == '<'))
-	// {
-	// 	va->quote = 0;
-	// 	return (va->quote);
-	// }
-	// va->quote = 1;
-	if (line[*i + 1] == '\0')
-		return (0);
-	if (va->q == line[*i])
-		(*i)++;
-	while (line[*i] && line[*i] != va->q)
-		(*i)++;
+	int	i;
+
+	i = 0;
+	while (line[i])
+	{
+		if ((line[i] == ' ' || line[i] == '\'' || line[i] == '\"' 
+			|| line[i] == '>' || line[i] == '<' || line[i] == '|'))
+			return (1);
+		i++;
+	}
 	return (0);
 }
 
-void	tfri9a(t_vars *va)
+void	tfri9a(t_list **head, char *line)
 {
-	while (va->line[va->i])
+	int	i;
+	int end;
+	int start;
+	// (void)head;
+	i = 0;
+	end = 0;
+	start = 0;
+	while (line[i])
 	{
-		va->start = va->end;
-		while (va->line[va->end])
+		// printf("c = [%s]\n",line);
+		start = end;
+		// printf("end = %d\n", end);
+		while (line[end])
 		{
-			va->q = va->line[va->end];
-			if (va->line[va->end] == '\'' || va->line[va->end] == '"')
-				quote_func(va, va->line, &va->end);
-			if (!va->quote && (!va->line[va->end] || va->line[va->end] == ' ' || va->line[va->end] == '>' || va->line[va->end] == '<' 
-				|| va->line[va->end] == '|' || va->line[va->end] == '\t'))
+			if ((line[end] == ' ' || line[end] == '\'' || line[end] == '\"' 
+				|| line[end] == '>' || line[end] == '<' || line[end] == '|'
+				|| line[end] == '\t'))
+			{
+				// printf("c[%d] = [%c]\n", end, line[end]);
 				break ;
-			va->end++;
+			}
+			end++;
 		}
-		if (va->end - va->start != 0)
-			ft_lstadd_back(&va->head, ft_lstnew(ft_substr(va->line, va->start, va->end - va->start)));
-		if (va->line[va->end] && va->line[va->end] != ' ' && va->line[va->end] != '\t')
-			ft_lstadd_back(&va->head, ft_lstnew(ft_substr(&va->line[va->end], 0, 1)));
-		va->end++;
-		va->i = va->end;
+		if (end - start != 0)
+			ft_lstadd_back(head, ft_lstnew(ft_substr(line, start, end - start)));
+		// if (end == (int)(ft_strlen(line)) && !ft_search(line))
+		// 	ft_lstadd_back(head, ft_lstnew(line));
+		if (line[end])
+			ft_lstadd_back(head, ft_lstnew(ft_substr(&line[end], 0, 1)));
+		// printf("line[%d]= [%s]    sub[%s]\n", end, &line[end], ft_substr(&line[end], 0, 1));
+		end++;
+		// printf("line = %s\n", (*head)->str);
+		i = end;
+		// printf("c = [%c]   end = %d\n",line[end], end);
+		
 	}
-}
-
-void	init(t_vars *va)
-{
-	va = NULL;
-	va->dollar = 0;
-	va->i = 0;
-	va->end = 0;
-	va->start = 0;
-	va->head = NULL;
-	va->line = NULL;
 }
 
 int main()
 {
-	t_vars	va;
+	t_list	*head;
+	char *line;
+	char **str;
+	int	 i;
 
-	init(&va);
+	i = 0;
+	str = NULL;
+	head = NULL;
 	while (1)
 	{
-		va.line = readline("> ");
-		add_history(va.line);
-		tfri9a(&va);
-		if (va.head)
+		line = readline("> ");
+		add_history(line);
+		// str = ft_split(line, ':');
+		tfri9a(&head, line);
+		if (head)
 		{
-			while (va.head->next)
+			while (head->next)
 			{
-				if (!*va.head->str)
+				if (!*head->str)
 					printf("ha  ");
-				printf("va.head = [%s]   \n", va.head->str);
-				va.head = va.head->next;
+				printf("head = [%s]   \n", head->str);
+				head = head->next;
 			}
-			printf("va.head last = [%s]   \n", va.head->str);
-			ft_lstclear(&va.head);
+			printf("head last = [%s]   \n", head->str);
+			ft_lstclear(&head);
 			// while (head->prev)
 			// {
 			// 	printf("head = %s\n", head->str);
