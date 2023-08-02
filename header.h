@@ -6,7 +6,7 @@
 /*   By: zouaraqa <zouaraqa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:52:55 by zouaraqa          #+#    #+#             */
-/*   Updated: 2023/05/18 11:36:11 by zouaraqa         ###   ########.fr       */
+/*   Updated: 2023/05/20 14:51:41 by zouaraqa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,25 @@ typedef struct s_list {
 	struct s_list	*prev;
 }t_list;
 
+typedef struct s_count{
+	int	quote_error;
+	int	redirec_error;
+	int	pipe_error;
+}t_count;
+
+typedef struct s_vars{
+	char	q;
+	char	*line;
+	int		quote;
+	int		dollar;
+	int		i;
+	int		end;
+	int		start;
+	int		p1[2];
+	int		p2[2];
+	int		n_pipe;
+	t_list	*head;
+}t_vars;
 
 t_list	*ft_lstnew(char	*str);
 t_list	*ft_lstlast(t_list *lst);

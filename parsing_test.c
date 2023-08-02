@@ -6,94 +6,109 @@
 /*   By: zouaraqa <zouaraqa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 11:52:23 by zouaraqa          #+#    #+#             */
-/*   Updated: 2023/05/18 13:09:12 by zouaraqa         ###   ########.fr       */
+/*   Updated: 2023/05/20 14:56:29 by zouaraqa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int	ft_search(char *line)
-{
-	int	i;
+// int	ft_search(char *line)
+// {
+// 	int	i;
 
-	i = 0;
-	while (line[i])
-	{
-		if ((line[i] == ' ' || line[i] == '\'' || line[i] == '\"' 
-			|| line[i] == '>' || line[i] == '<' || line[i] == '|'))
-			return (1);
-		i++;
-	}
+// 	i = 0;
+// 	while (line[i])
+// 	{
+// 		if ((line[i] == ' ' || line[i] == '\'' || line[i] == '\"' 
+// 			|| line[i] == '>' || line[i] == '<' || line[i] == '|'))
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+int	quote_func(t_vars *va, char *line, int *i)
+{
+	// if (line[*i] == va->q && (line[*i + 1] == ' ' || line[*i + 1] == '\t' || line[*i + 1] == '|' 
+	// 	|| line[*i + 1] == '>' || line[*i + 1] == '<'))
+	// 	{
+	// 		va->quote = 0;
+	// 		return (va->quote);
+	// 	}
+	// while (line[*i] && line[*i] != va->q)
+	// 	(*i)++;
+	// if (line[*i] == va->q && (line[*i + 1] == ' ' || line[*i + 1] == '\t' || line[*i + 1] == '|' 
+	// || line[*i + 1] == '>' || line[*i + 1] == '<'))
+	// {
+	// 	va->quote = 0;
+	// 	return (va->quote);
+	// }
+	// va->quote = 1;
+	if (line[*i + 1] == '\0')
+		return (0);
+	if (va->q == line[*i])
+		(*i)++;
+	while (line[*i] && line[*i] != va->q)
+		(*i)++;
 	return (0);
 }
 
-void	tfri9a(t_list **head, char *line)
+void	tfri9a(t_vars *va)
 {
-	int	i;
-	int end;
-	int start;
-	// (void)head;
-	i = 0;
-	end = 0;
-	start = 0;
-	while (line[i])
+	while (va->line[va->i])
 	{
-		// printf("c = [%s]\n",line);
-		start = end;
-		// printf("end = %d\n", end);
-		while (line[end])
+		va->start = va->end;
+		while (va->line[va->end])
 		{
-			if ((line[end] == ' ' || line[end] == '\'' || line[end] == '\"' 
-				|| line[end] == '>' || line[end] == '<' || line[end] == '|'
-				|| line[end] == '\t'))
-			{
-				// printf("c[%d] = [%c]\n", end, line[end]);
+			va->q = va->line[va->end];
+			if (va->line[va->end] == '\'' || va->line[va->end] == '"')
+				quote_func(va, va->line, &va->end);
+			if (!va->quote && (!va->line[va->end] || va->line[va->end] == ' ' || va->line[va->end] == '>' || va->line[va->end] == '<' 
+				|| va->line[va->end] == '|' || va->line[va->end] == '\t'))
 				break ;
-			}
-			end++;
+			va->end++;
 		}
-		if (end - start != 0)
-			ft_lstadd_back(head, ft_lstnew(ft_substr(line, start, end - start)));
-		// if (end == (int)(ft_strlen(line)) && !ft_search(line))
-		// 	ft_lstadd_back(head, ft_lstnew(line));
-		if (line[end])
-			ft_lstadd_back(head, ft_lstnew(ft_substr(&line[end], 0, 1)));
-		// printf("line[%d]= [%s]    sub[%s]\n", end, &line[end], ft_substr(&line[end], 0, 1));
-		end++;
-		// printf("line = %s\n", (*head)->str);
-		i = end;
-		// printf("c = [%c]   end = %d\n",line[end], end);
-		
+		if (va->end - va->start != 0)
+			ft_lstadd_back(&va->head, ft_lstnew(ft_substr(va->line, va->start, va->end - va->start)));
+		if (va->line[va->end] && va->line[va->end] != ' ' && va->line[va->end] != '\t')
+			ft_lstadd_back(&va->head, ft_lstnew(ft_substr(&va->line[va->end], 0, 1)));
+		va->end++;
+		va->i = va->end;
 	}
+}
+
+void	init(t_vars *va)
+{
+	va = NULL;
+	va->dollar = 0;
+	va->i = 0;
+	va->end = 0;
+	va->start = 0;
+	va->head = NULL;
+	va->line = NULL;
 }
 
 int main()
 {
-	t_list	*head;
-	char *line;
-	char **str;
-	int	 i;
+	t_vars	va;
 
-	i = 0;
-	str = NULL;
-	head = NULL;
+	init(&va);
 	while (1)
 	{
-		line = readline("> ");
-		add_history(line);
-		// str = ft_split(line, ':');
-		tfri9a(&head, line);
-		if (head)
+		va.line = readline("> ");
+		add_history(va.line);
+		tfri9a(&va);
+		if (va.head)
 		{
-			while (head->next)
+			while (va.head->next)
 			{
-				if (!*head->str)
+				if (!*va.head->str)
 					printf("ha  ");
-				printf("head = [%s]   \n", head->str);
-				head = head->next;
+				printf("va.head = [%s]   \n", va.head->str);
+				va.head = va.head->next;
 			}
-			printf("head last = [%s]   \n", head->str);
-			ft_lstclear(&head);
+			printf("va.head last = [%s]   \n", va.head->str);
+			ft_lstclear(&va.head);
 			// while (head->prev)
 			// {
 			// 	printf("head = %s\n", head->str);
